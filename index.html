@@ -3,387 +3,278 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>3号巴士 点名表</title>
+<title>住宿生大巴点名表</title>
 <style>
+  :root{
+    --blue:#2563eb;
+    --blue-dark:#1d4ed8;
+    --ink:#1f2937;
+    --muted:#64748b;
+  }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   body{
     margin:0;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    background:#eef1f6;color:#1f2937;-webkit-font-smoothing:antialiased;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 520px at 50% -12%, #dbeafe 0%, rgba(219,234,254,0) 62%),
+      #eef1f6;
+    -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:760px;margin:0 auto;padding:14px 12px 104px;}
 
-  /* ---------- 头部 ---------- */
-  .hero{
-    display:flex;align-items:center;gap:13px;
-    background:linear-gradient(135deg,#2f6bff,#1d4ed8);
-    color:#fff;border-radius:16px;padding:16px 18px;
-    box-shadow:0 8px 20px rgba(37,99,235,.28);margin-bottom:12px;
+  .wrap{
+    width:100%;
+    max-width:960px;
+    margin:0 auto;
+    padding:38px 18px 46px;
+    flex:1;
   }
+
+  /* ---------- 页头 ---------- */
+  .page-head{text-align:center;margin-bottom:30px;}
+  .page-head h1{
+    margin:0;
+    font-size:clamp(22px,5.2vw,30px);
+    letter-spacing:1.5px;
+    color:#0f2a66;
+  }
+  .page-head .sub{
+    margin:11px 0 0;
+    font-size:13.5px;
+    color:var(--muted);
+    letter-spacing:.3px;
+  }
+  .date-chip{
+    display:inline-block;
+    margin-top:15px;
+    padding:5px 15px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    font-size:12.5px;
+    color:#475569;
+    box-shadow:0 1px 4px rgba(15,23,42,.05);
+  }
+
+  /* ---------- 卡片网格 ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(265px,1fr));
+    gap:16px;
+  }
+
+  .card{
+    position:relative;
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    background:#fff;
+    border-radius:18px;
+    padding:20px 20px 18px;
+    border:1px solid #e8edf5;
+    box-shadow:0 3px 14px rgba(15,23,42,.07);
+    overflow:hidden;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    animation:cardIn .45s ease both;
+  }
+  .card:nth-child(1){animation-delay:.04s;}
+  .card:nth-child(2){animation-delay:.12s;}
+  .card:nth-child(3){animation-delay:.20s;}
+
+  @keyframes cardIn{
+    from{opacity:0;transform:translateY(12px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  .card::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:4px;
+    background:linear-gradient(90deg,#3b82f6,#1d4ed8);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .28s ease;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 28px rgba(37,99,235,.17);
+    border-color:#c7d9f7;
+  }
+  .card:hover::after{transform:scaleX(1);}
+  .card:active{transform:translateY(-1px) scale(.995);}
+  .card:focus-visible{
+    outline:3px solid rgba(37,99,235,.35);
+    outline-offset:2px;
+  }
+
+  .card-top{display:flex;align-items:center;gap:13px;}
   .bus-badge{
-    width:50px;height:50px;flex:none;border-radius:14px;
-    background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.65);
+    width:52px;height:52px;flex:none;
+    border-radius:15px;
+    background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+    color:#fff;
     display:flex;align-items:center;justify-content:center;
-    font-size:27px;font-weight:800;letter-spacing:0;
+    font-size:26px;font-weight:800;
+    box-shadow:0 6px 14px rgba(37,99,235,.30);
   }
-  .hero h1{margin:0;font-size:20px;letter-spacing:.5px;}
-  .hero p{margin:4px 0 0;font-size:12.5px;opacity:.88;}
-
-  /* ---------- 提醒条 ---------- */
-  .notice{
-    display:flex;gap:10px;align-items:flex-start;
-    background:#fff8e1;border:1px solid #ffe08a;border-left:5px solid #f5a623;
-    color:#7a4d00;border-radius:12px;padding:11px 14px;
-    font-size:13.5px;line-height:1.6;margin-bottom:12px;
+  .card-title h2{margin:0;font-size:18px;color:#0f2a66;letter-spacing:.5px;}
+  .card-title p{margin:4px 0 0;font-size:12.5px;color:var(--muted);}
+  .arrow{
+    margin-left:auto;
+    font-size:20px;
+    color:#cbd5e1;
+    transition:transform .2s ease,color .2s ease;
   }
-  .notice-icon{font-size:16px;line-height:1.5;flex:none;}
-  .notice b{color:#c2410c;}
+  .card:hover .arrow{transform:translateX(4px);color:#3b82f6;}
 
-  /* ---------- 搜索栏 ---------- */
-  .search-bar{
-    display:flex;align-items:center;gap:8px;
-    background:#fff;border-radius:12px;padding:8px 12px;
-    margin-bottom:14px;box-shadow:0 2px 8px rgba(15,23,42,.05);
+  .card-meta{
+    display:flex;
     flex-wrap:wrap;
+    gap:8px;
+    margin-top:16px;
   }
-  .search-bar input{
-    flex:1;min-width:120px;border:none;outline:none;
-    font-size:14px;padding:8px 4px;font-family:inherit;
-    background:transparent;color:#1e293b;
-  }
-  .search-bar input::placeholder{color:#94a3b8;}
-  .search-bar button{
-    border:none;border-radius:8px;padding:8px 14px;
-    font-size:13.5px;font-weight:600;cursor:pointer;
-    font-family:inherit;transition:transform .12s,background .15s;
+  .pill{
+    font-size:12px;
+    padding:4px 11px;
+    border-radius:999px;
+    background:#f1f5f9;
+    color:#475569;
     white-space:nowrap;
   }
-  .search-bar button:active{transform:scale(.95);}
-  #searchBtn{background:#2563eb;color:#fff;}
-  #searchBtn:active{background:#1d4ed8;}
-  #clearSearchBtn{background:#eef2f7;color:#475569;}
-  #clearSearchBtn:active{background:#e2e8f0;}
-  .search-result{
-    font-size:12.5px;color:#64748b;margin-left:4px;
-    white-space:nowrap;min-width:48px;
+  .pill b{color:#2563eb;font-weight:700;}
+
+  .card-note{
+    display:flex;
+    align-items:flex-start;
+    gap:6px;
+    margin-top:12px;
+    padding:8px 11px;
+    border-radius:10px;
+    background:#fff8e1;
+    border:1px solid #ffe08a;
+    color:#8a5a00;
+    font-size:12.5px;
+    line-height:1.45;
+  }
+  .card-note strong{color:#c2410c;font-weight:700;}
+
+  /* ---------- 页脚 ---------- */
+  .page-foot{
+    text-align:center;
+    font-size:12px;
+    line-height:1.9;
+    color:#94a3b8;
+    margin-top:34px;
+  }
+  .page-foot .dot{margin:0 6px;color:#cbd5e1;}
+
+  @media (max-width:480px){
+    .wrap{padding:26px 14px 36px;}
+    .card{padding:17px 16px 15px;border-radius:16px;}
+    .bus-badge{width:46px;height:46px;font-size:23px;border-radius:13px;}
+    .card-title h2{font-size:16.5px;}
+    .card-title p{font-size:12px;}
   }
 
-  /* ---------- 分组卡片 ---------- */
-  .group{
-    background:#fff;border-radius:14px;overflow:hidden;
-    margin-bottom:14px;box-shadow:0 2px 10px rgba(15,23,42,.06);
-  }
-  .group-head{
-    display:flex;align-items:center;gap:10px;
-    padding:11px 14px;background:#f8fafc;border-bottom:1px solid #e6eaf0;
-  }
-  .group-name{font-weight:700;font-size:16px;color:#1e3a8a;}
-  .group-count{font-size:13px;color:#64748b;margin-right:auto;}
-  .all-btn{
-    border:1px solid #cbd5e1;background:#fff;color:#334155;
-    border-radius:8px;padding:5px 11px;font-size:12.5px;cursor:pointer;
-    font-family:inherit;transition:transform .12s,background .15s;
-  }
-  .all-btn:active{transform:scale(.95);background:#f1f5f9;}
-
-  /* ---------- 表格 ---------- */
-  .tbl{width:100%;border-collapse:collapse;}
-  .tbl th{
-    font-size:11.5px;font-weight:600;color:#94a3b8;text-align:left;
-    padding:8px 8px;border-bottom:1px solid #eef2f7;background:#fff;
-  }
-  .tbl td{
-    padding:10px 8px;border-bottom:1px solid #f1f5f9;
-    font-size:13.5px;vertical-align:middle;line-height:1.35;
-  }
-  .tbl tr:last-child td{border-bottom:none;}
-  .tbl th:nth-child(1){width:26%;}
-  .tbl th:nth-child(2){width:11%;}
-  .tbl th:nth-child(3){width:21%;}
-  .tbl th:nth-child(4){width:19%;}
-  .tbl th:nth-child(5){width:9%;}
-  .tbl th:nth-child(6){width:14%;text-align:center;}
-  .tbl td:nth-child(5){text-align:center;color:#64748b;}
-  .tbl td:nth-child(6){text-align:center;}
-  .tbl td:nth-child(3),
-  .tbl td:nth-child(4){color:#475569;font-size:13px;}
-
-  .name{font-weight:600;color:#1e293b;}
-
-  /* ---------- 行状态 ---------- */
-  .row{cursor:pointer;transition:background .15s;}
-  .row:active{background:#f8fafc;}
-  .row.done{background:#f0fdf4;}
-  .row.done .name{color:#15803d;}
-  .row.divert{background:#fffdf5;}
-  .row.divert.done{background:#f0fdf4;}
-
-  /* 搜索高亮 */
-  .row.highlight{
-    background:#fef3c7 !important;
-    box-shadow:inset 0 0 0 2px #f59e0b;
-  }
-  .row.highlight.done{
-    background:#fef3c7 !important;
-  }
-  @keyframes flash{
-    0%{box-shadow:inset 0 0 0 2px #f59e0b;}
-    50%{box-shadow:inset 0 0 0 4px #fbbf24;}
-    100%{box-shadow:inset 0 0 0 2px #f59e0b;}
-  }
-  .row.highlight{animation:flash .9s ease 1;}
-
-  .box{
-    display:inline-block;width:22px;height:22px;border-radius:7px;
-    border:2px solid #cbd5e1;background:#fff;position:relative;
-    transition:background .15s,border-color .15s;
-  }
-  .row.done .box{background:#16a34a;border-color:#16a34a;}
-  .row.done .box::after{
-    content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;
-    border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg);
-  }
-
-  .gender{
-    display:inline-block;min-width:24px;text-align:center;
-    padding:2px 6px;border-radius:6px;font-size:11.5px;font-weight:600;
-  }
-  .g-f{background:#fce7f3;color:#be185d;}
-  .g-m{background:#dbeafe;color:#1d4ed8;}
-
-  .tag{
-    display:inline-block;margin-left:5px;font-size:10.5px;font-weight:600;
-    background:#fff1f2;color:#e11d48;border:1px solid #fecdd3;
-    border-radius:6px;padding:1px 5px;vertical-align:middle;white-space:nowrap;
-  }
-
-  /* ---------- 底部统计栏 ---------- */
-  .footer-bar{
-    position:fixed;left:0;right:0;bottom:0;z-index:9;
-    max-width:760px;margin:0 auto;
-    display:flex;align-items:center;gap:12px;
-    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-    background:rgba(255,255,255,.94);
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    border-top:1px solid #e2e8f0;border-radius:16px 16px 0 0;
-    box-shadow:0 -4px 16px rgba(15,23,42,.06);
-  }
-  .stat{font-size:13.5px;color:#475569;}
-  .stat b{color:#2563eb;font-size:19px;font-weight:800;margin:0 1px;}
-  #resetBtn{
-    margin-left:auto;border:none;border-radius:10px;
-    padding:9px 20px;background:#eef2f7;color:#475569;
-    font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;
-    transition:transform .12s,background .15s;
-  }
-  #resetBtn:active{transform:scale(.96);background:#e2e8f0;}
-
-  @media print{
-    body{background:#fff;}
-    .wrap{padding-bottom:0;max-width:none;}
-    .footer-bar,.all-btn,.search-bar{display:none;}
-    .group{box-shadow:none;border:1px solid #ddd;}
-    .hero{box-shadow:none;}
-    .row.highlight{background:transparent !important;box-shadow:none !important;animation:none !important;}
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
   }
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <header class="hero">
-    <div class="bus-badge">3</div>
-    <div>
-      <h1>3号巴士 点名表</h1>
-      <p>5班 · 6班 · 9班 住宿生 ｜ 共 15 人</p>
-    </div>
+
+  <header class="page-head">
+    <h1>住宿生大巴点名表</h1>
+    <p class="sub">共 3 辆车 ｜ 49 名住宿生</p>
+    <div class="date-chip" id="today"></div>
   </header>
 
-  <div class="notice">
-    <span class="notice-icon">🔔</span>
-    <div>
-      <strong>特别提醒：</strong>6班女生 —— <b>孙奕帆、周茜琦、陈予洵</b>，
-      请前往 <b>4号巴士</b> 乘坐，3号车不再等候。
-    </div>
-  </div>
+  <main class="grid">
 
-  <!-- 宿舍号查找定位 -->
-  <div class="search-bar">
-    <input type="search" id="dormSearch" placeholder="输入宿舍号，如 213 或 女生213" autocomplete="off">
-    <button id="searchBtn">查找</button>
-    <button id="clearSearchBtn">清除</button>
-    <span class="search-result" id="searchResult"></span>
-  </div>
+    <!-- 1号巴士 -->
+    <a class="card" href="bus1.html">
+      <div class="card-top">
+        <div class="bus-badge">1</div>
+        <div class="card-title">
+          <h2>1号巴士</h2>
+          <p>1班 · 4班 · 8班 · 10班</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="card-meta">
+        <span class="pill">共 <b>15</b> 人</span>
+        <span class="pill">4 个班级</span>
+      </div>
+      <div class="card-note">
+        <span>🔔</span>
+        <span><strong>10班全体 3 个寝室</strong> 需前往 4号车</span>
+      </div>
+    </a>
 
-  <div id="list"></div>
-</div>
+    <!-- 2号巴士 -->
+    <a class="card" href="bus2.html">
+      <div class="card-top">
+        <div class="bus-badge">2</div>
+        <div class="card-title">
+          <h2>2号巴士</h2>
+          <p>2班 · 3班 · 7班</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="card-meta">
+        <span class="pill">共 <b>19</b> 人</span>
+        <span class="pill">3 个班级</span>
+      </div>
+      <div class="card-note">
+        <span>🔔</span>
+        <span><strong>2班女生 3 个寝室</strong> 需前往 4号车</span>
+      </div>
+    </a>
 
-<div class="footer-bar">
-  <div class="stat">已到 <b id="doneCount">0</b> / <span id="totalCount">15</span> 人</div>
-  <button id="resetBtn">重 置</button>
+    <!-- 3号巴士 -->
+    <a class="card" href="bus3.html">
+      <div class="card-top">
+        <div class="bus-badge">3</div>
+        <div class="card-title">
+          <h2>3号巴士</h2>
+          <p>5班 · 6班 · 9班</p>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="card-meta">
+        <span class="pill">共 <b>15</b> 人</span>
+        <span class="pill">3 个班级</span>
+      </div>
+      <div class="card-note">
+        <span>🔔</span>
+        <span><strong>6班女生 3 个寝室</strong> 需前往 4号车</span>
+      </div>
+    </a>
+
+  </main>
+
+  <footer class="page-foot">
+    点击卡片进入对应车辆点名表<span class="dot">·</span>支持宿舍号查找定位
+    <br>
+    蓝色底行表示该生需前往其他车辆
+  </footer>
+
 </div>
 
 <script>
-const DATA = [
-  {
-    cls: '5班',
-    students: [
-      { name:'危笑',   gender:'女', dorm:'女生213', duty:'宿舍长',   num:'5' },
-      { name:'宋怡霓', gender:'女', dorm:'女生214', duty:'宿舍长',   num:'6' },
-      { name:'郭悦棶', gender:'男', dorm:'男生301', duty:'宿舍长',   num:'2' },
-      { name:'方智杰', gender:'男', dorm:'男生302', duty:'宿舍长',   num:'6' }
-    ]
-  },
-  {
-    cls: '6班',
-    students: [
-      { name:'孙奕帆', gender:'女', dorm:'女生215', duty:'宿舍长', num:'5', note:'去4车' },
-      { name:'周茜琦', gender:'女', dorm:'女生216', duty:'宿舍长', num:'5', note:'去4车' },
-      { name:'陈予洵', gender:'女', dorm:'女生217', duty:'宿舍长', num:'5', note:'去4车' },
-      { name:'张启正', gender:'男', dorm:'男生301', duty:'并入303', num:'7' },
-      { name:'梁峻豪', gender:'男', dorm:'男生303', duty:'宿舍长',  num:'7' },
-      { name:'张恒嘉', gender:'男', dorm:'男生304', duty:'宿舍长',  num:'7' },
-      { name:'梁之晓', gender:'男', dorm:'男生312', duty:'并入304', num:'7' }
-    ]
-  },
-  {
-    cls: '9班',
-    students: [
-      { name:'贾涵淇', gender:'女', dorm:'女生221', duty:'宿舍长', num:'5' },
-      { name:'黄艺淇', gender:'女', dorm:'女生223', duty:'宿舍长', num:'3' },
-      { name:'廖泽熙', gender:'男', dorm:'男生309', duty:'宿舍长', num:'6' },
-      { name:'张浩鹏', gender:'男', dorm:'男生310', duty:'宿舍长', num:'6' }
-    ]
-  }
-];
-
-const listEl = document.getElementById('list');
-
-DATA.forEach((group, gi) => {
-  const section = document.createElement('section');
-  section.className = 'group';
-  section.innerHTML = `
-    <div class="group-head">
-      <span class="group-name">${group.cls}</span>
-      <span class="group-count"><b>0</b>/${group.students.length}</span>
-      <button class="all-btn" data-group="${gi}">全部到齐</button>
-    </div>
-    <table class="tbl">
-      <thead>
-        <tr>
-          <th>姓名</th><th>性别</th><th>宿舍</th><th>职务</th><th>人数</th><th>状态</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>`;
-
-  const tbody = section.querySelector('tbody');
-
-  group.students.forEach((s, si) => {
-    const tr = document.createElement('tr');
-    tr.className = 'row' + (s.note ? ' divert' : '');
-    tr.dataset.group = gi;
-    tr.dataset.key = gi + '-' + si;
-    tr.innerHTML = `
-      <td class="name">${s.name}${s.note ? `<span class="tag">${s.note}</span>` : ''}</td>
-      <td><span class="gender ${s.gender === '女' ? 'g-f' : 'g-m'}">${s.gender}</span></td>
-      <td>${s.dorm}</td>
-      <td>${s.duty}</td>
-      <td>${s.num}</td>
-      <td><span class="box"></span></td>`;
-    tr.addEventListener('click', () => {
-      tr.classList.toggle('done');
-      updateStats();
-    });
-    tbody.appendChild(tr);
-  });
-
-  listEl.appendChild(section);
-});
-
-/* 统计 */
-function updateStats() {
-  const rows = document.querySelectorAll('.row');
-  const done = document.querySelectorAll('.row.done').length;
-  document.getElementById('doneCount').textContent = done;
-  document.getElementById('totalCount').textContent = rows.length;
-
-  document.querySelectorAll('.group').forEach(g => {
-    const all = g.querySelectorAll('.row').length;
-    const d = g.querySelectorAll('.row.done').length;
-    g.querySelector('.group-count b').textContent = d;
-  });
-}
-
-/* 整班「全部到齐」 */
-document.querySelectorAll('.all-btn').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    const rows = document.querySelectorAll(`.row[data-group="${btn.dataset.group}"]`);
-    const allDone = Array.from(rows).every(r => r.classList.contains('done'));
-    rows.forEach(r => r.classList.toggle('done', !allDone));
-    updateStats();
-  });
-});
-
-/* 重置 */
-document.getElementById('resetBtn').addEventListener('click', () => {
-  document.querySelectorAll('.row.done').forEach(r => r.classList.remove('done'));
-  updateStats();
-});
-
-/* ---------- 宿舍号查找定位 ---------- */
-const dormInput = document.getElementById('dormSearch');
-const searchResult = document.getElementById('searchResult');
-
-function searchDorm() {
-  const keyword = dormInput.value.trim();
-  // 清除旧高亮
-  document.querySelectorAll('.row.highlight').forEach(r => r.classList.remove('highlight'));
-
-  if (!keyword) {
-    searchResult.textContent = '';
-    return;
-  }
-
-  const rows = document.querySelectorAll('.row');
-  const matches = [];
-
-  rows.forEach(row => {
-    const dormCell = row.querySelector('td:nth-child(3)');
-    if (dormCell && dormCell.textContent.includes(keyword)) {
-      row.classList.add('highlight');
-      matches.push(row);
-    }
-  });
-
-  if (matches.length === 0) {
-    searchResult.textContent = '未找到';
-    searchResult.style.color = '#e11d48';
-  } else {
-    searchResult.textContent = `找到 ${matches.length} 个`;
-    searchResult.style.color = '#16a34a';
-    // 滚动到第一个匹配项
-    matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function clearSearch() {
-  dormInput.value = '';
-  document.querySelectorAll('.row.highlight').forEach(r => r.classList.remove('highlight'));
-  searchResult.textContent = '';
-}
-
-document.getElementById('searchBtn').addEventListener('click', searchDorm);
-document.getElementById('clearSearchBtn').addEventListener('click', clearSearch);
-dormInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    searchDorm();
-  }
-});
-
-updateStats();
+  (function () {
+    var d = new Date();
+    var week = '日一二三四五六'[d.getDay()];
+    document.getElementById('today').textContent =
+      d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日 星期' + week;
+  })();
 </script>
+
 </body>
 </html>
